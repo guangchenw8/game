@@ -14,7 +14,9 @@ let mouse = {
   y: 0,
   pressed: false,
 };
-let plr, laser, zombie, playbutton, frameCount;
+let plr, enemy, laser, zombie, playbutton;
+let enemyCooldown = 0;
+let hiScore = 0;
 let laserArray = [];
 let enemyArray = [];
 let gameState = 'start';

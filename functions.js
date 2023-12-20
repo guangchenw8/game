@@ -2,11 +2,13 @@ function runGame() {
   drawBasicUI();
   if (gameState === 'play') {
     // Logic
+    logicGame();
+    logicEnemies();
     logicCharacter();
     moveCharacter();
-    logicEnemies();
     moveEnemies();
     moveLasers();
+
     // Draw
     drawBackground();
     drawCharacter();
@@ -34,12 +36,11 @@ function setGame() {
     iFrames: 0,
     health: 100,
   };
-  enemy = {
-    x: 400,
-    y: 100,
-    w: 40,
-    h: 40,
-  };
+}
+
+// Game logic
+function logicGame() {
+  hiScore++;
 }
 
 // Draw Basic UI
@@ -62,8 +63,8 @@ function drawBasicUI() {
   ctx.fillText('Game', 705, 90, 75);
 
   // High Score
-  let a = 0;
-  ctx.fillText(`Hi-Score: ${a}`, 20, 30, 100, 100);
+
+  ctx.fillText(`Hi-Score: ${hiScore}`, 20, 30, 100, 100);
 }
 
 // Draw Start UI
@@ -183,19 +184,22 @@ function logicCharacter() {
     }
   }
   if (plr.cooldown > 0) {
-    plr.cooldown -= 1;
+    plr.cooldown--;
   }
 
   // Check collisions
-  if (
-    plr.x + plr.w > enemy.x &&
-    plr.x < enemy.x + enemy.w &&
-    plr.y + plr.h > enemy.y &&
-    plr.y < enemy.y + enemy.h &&
-    plr.iFrames === 0
-  ) {
-    plr.health -= 10;
-    plr.iFrames += 60;
+
+  for (let i = 0; i < enemyArray.length; i++) {
+    if (
+      plr.x + plr.w > enemyArray[i].x &&
+      plr.x < enemyArray[i].x + enemyArray[i].w &&
+      plr.y + plr.h > enemyArray[i].y &&
+      plr.y < enemyArray[i].y + enemyArray[i].h &&
+      plr.iFrames === 0
+    ) {
+      plr.health -= 10;
+      plr.iFrames += 60;
+    }
   }
   if (plr.iFrames > 0) {
     plr.iFrames -= 1;
@@ -252,24 +256,58 @@ function drawLasers() {
 }
 
 function logicEnemies() {
-  setTimeout(spawnEnemies, 1000);
+  if (enemyCooldown === 0) {
+    spawnEnemies();
+    if (hiScore < 500) {
+      enemyCooldown += 300;
+    } else if (hiScore < 1000) {
+      enemyCooldown += 180;
+    } else if (hiScore < 1500) {
+      enemyCooldown += 60;
+    } else {
+      enemyCooldown += 30;
+    }
+  } else if (enemyCooldown > 0) {
+    enemyCooldown--;
+  }
+   for (let i1 = 0; i1 < enemyArray.length; i1++) {
+
+    for (let i2 = 0; i2 < laserArray.length; i1++) {
+      if (enemyArray[i1].x + enemyArray[i1].w > laserArra[i2].x - laserArray[i2].r && enemyArray[i1].x < laserArray[i2].x + laserArray[i2].r && enemyArray[i1].y + enemyArray[i1].h > laserArray[i2].y - laserArray[i2].r
+
+
+        // asjkl dhasldkjh
+        )
+   }
 }
+}
+
 function spawnEnemies() {
-  let enemy = enemyArray.push();
+  enemy = {
+    x: 150 + Math.random() * 460,
+    y: 0,
+    w: 40,
+    h: 40,
+  };
+
+  enemyArray.push(enemy);
 }
 function moveEnemies() {
-  enemy.y += 2;
-
-  if (enemy.y > 600) {
-    enemy.y = -enemy.h;
+  for (let i = 0; i < enemyArray.length; i++) {
+    enemyArray[i].y += 2;
+    if (enemyArray[i].y > 600) {
+      enemyArray.splice(i, 1);
+    }
   }
 }
 function drawEnemies() {
-  ctx.drawImage(
-    document.getElementById('enemyship'),
-    enemy.x,
-    enemy.y,
-    enemy.w,
-    enemy.h
-  );
+  for (let i = 0; i < enemyArray.length; i++) {
+    ctx.drawImage(
+      document.getElementById('enemyship'),
+      enemyArray[i].x,
+      enemyArray[i].y,
+      enemyArray[i].w,
+      enemyArray[i].h
+    );
+  }
 }
