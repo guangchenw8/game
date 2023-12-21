@@ -1,5 +1,5 @@
 function runGame() {
-  drawBasicUI();
+  drawUI();
   if (gameState === 'play') {
     // Logic
     logicGame();
@@ -12,13 +12,9 @@ function runGame() {
     // Draw
     drawBackground();
     drawCharacter();
-    drawGameUI();
+
     drawEnemies();
     drawLasers();
-  } else if (gameState === 'start') {
-    drawStart();
-  } else if (gameState === 'lose') {
-    drawLose();
   }
 }
 
@@ -39,71 +35,57 @@ function setGame() {
 }
 
 // Game logic
-function logicGame() {
-  hiScore++;
-}
+function logicGame() {}
 
-// Draw Basic UI
-function drawBasicUI() {
-  // Left and right bars
-  ctx.fillStyle = 'rgb(2, 161, 226)';
-  ctx.fillRect(0, 0, 150, 600);
-  ctx.fillRect(650, 0, 150, 600);
-
-  // Images
-  ctx.drawImage(document.getElementById('basicUI'), 0, 0, 800, 600);
-
-  // Theme colors and fonts
-  ctx.font = '50px Consolas';
-  ctx.fillStyle = 'rgb(95, 38, 76)';
-
-  // Title
-  ctx.fillText('Epic', 665, 60, 125, 100);
+// Draw UI
+function drawUI() {
+  // Base
+  ctx.drawImage(document.getElementById('base'), 0, 0);
+  ctx.drawImage(document.getElementById('hiscore'), 0, 0);
   ctx.font = '30px Consolas';
-  ctx.fillText('Game', 705, 90, 75);
-
-  // High Score
-
+  ctx.fillStyle = 'rgb(95, 38, 76)';
   ctx.fillText(`Hi-Score: ${hiScore}`, 20, 30, 100, 100);
-}
 
-// Draw Start UI
-function drawStart() {
-  // Middle Blue
-  ctx.fillStyle = 'rgb(88, 215, 204)';
-  ctx.fillRect(150, 0, 500, 600);
+  // Start Screen
+  if (gameState === 'start') {
+    // Play button
+    playbutton = {
+      x: 200,
+      y: 400,
+      w: 400,
+      h: 125,
+    };
+    ctx.drawImage(
+      document.getElementById('playbutton'),
+      playbutton.x,
+      playbutton.y,
+      playbutton.w,
+      playbutton.h
+    );
+    ctx.drawImage(document.getElementById('logo'), 0, 0);
 
-  // Play button
-  playbutton = {
-    x: 200,
-    y: 400,
-    w: 400,
-    h: 125,
-  };
-  ctx.drawImage(
-    document.getElementById('playbutton'),
-    playbutton.x,
-    playbutton.y,
-    playbutton.w,
-    playbutton.h
-  );
-}
+    // Play Screen
+  } else if (gameState === 'play') {
+    ctx.drawImage(document.getElementById('ingamelogo'), 0, 0);
+    ctx.fillStyle = 'rgb(95, 38, 76)';
 
-// Draw In-Game UI
-function drawGameUI() {
-  if (plr.health > 30) {
-    ctx.fillStyle = 'rgb(45, 235, 112)';
-  } else {
-    ctx.fillStyle = 'rgb(232, 60, 53)';
+    // Title
+    ctx.font = '30px Consolas';
+    ctx.fillText('Game', 650, 90, 75);
+
+    if (plr.health > 30) {
+      ctx.fillStyle = 'rgb(45, 235, 112)';
+    } else {
+      ctx.fillStyle = 'rgb(232, 60, 53)';
+    }
+    ctx.fillRect(100, 460 - plr.health * 3, 46, plr.health * 3);
+    ctx.drawImage(document.getElementById('healthbar'), 0, 0);
+
+    // Lose Screen
+  } else if (gameState === 'lose') {
+    ctx.fillStyle = 'rgb(88, 215, 204)';
+    ctx.fillText('lose', 200, 100);
   }
-  ctx.fillRect(100, 460 - plr.health * 3, 46, plr.health * 3);
-  ctx.drawImage(document.getElementById('gameUI'), 0, 0, 800, 600);
-}
-
-// Draw Lose UI
-function drawLose() {
-  ctx.fillStyle = 'rgb(88, 215, 204)';
-  ctx.fillText('lose', 200, 100);
 }
 
 // Move Character function
@@ -270,16 +252,25 @@ function logicEnemies() {
   } else if (enemyCooldown > 0) {
     enemyCooldown--;
   }
-   for (let i1 = 0; i1 < enemyArray.length; i1++) {
-
-    for (let i2 = 0; i2 < laserArray.length; i1++) {
-      if (enemyArray[i1].x + enemyArray[i1].w > laserArra[i2].x - laserArray[i2].r && enemyArray[i1].x < laserArray[i2].x + laserArray[i2].r && enemyArray[i1].y + enemyArray[i1].h > laserArray[i2].y - laserArray[i2].r
-
-
-        // asjkl dhasldkjh
-        )
-   }
-}
+  for (let i1 = 0; i1 < enemyArray.length; i1++) {
+    for (let i2 = 0; i2 < laserArray.length; i2++) {
+      if (
+        enemyArray[i1].x + enemyArray[i1].w >
+          laserArray[i2].x - laserArray[i2].r &&
+        enemyArray[i1].x < laserArray[i2].x + laserArray[i2].r &&
+        enemyArray[i1].y + enemyArray[i1].h >
+          laserArray[i2].y - laserArray[i2].r &&
+        enemyArray[i1].y < laserArray[i2].y + laserArray[i2].r
+      ) {
+        enemyArray[i1].health -= 1;
+        laserArray.splice(i2, 1);
+      }
+    }
+    if (enemyArray[i1].health === 0) {
+      enemyArray.splice(i1, 1);
+      hiScore += 50;
+    }
+  }
 }
 
 function spawnEnemies() {
@@ -288,6 +279,7 @@ function spawnEnemies() {
     y: 0,
     w: 40,
     h: 40,
+    health: 3,
   };
 
   enemyArray.push(enemy);
