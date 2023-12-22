@@ -35,16 +35,26 @@ function setGame() {
 }
 
 // Game logic
-function logicGame() {}
+function logicGame() {
+  if (score > hiScore) {
+    hiScore = score;
+  }
+}
 
 // Draw UI
 function drawUI() {
   // Base
   ctx.drawImage(document.getElementById('base'), 0, 0);
-  ctx.drawImage(document.getElementById('hiscore'), 0, 0);
+  ctx.drawImage(document.getElementById('score'), 0, 0);
+
   ctx.font = '30px Consolas';
   ctx.fillStyle = 'rgb(95, 38, 76)';
-  ctx.fillText(`Hi-Score: ${hiScore}`, 20, 30, 100, 100);
+  ctx.fillText(`Score: ${score}`, 20, 30, 100, 100);
+  ctx.fillText(`Best: ${hiScore}`, 20, 63, 100, 100);
+
+  ctx.fillStyle = 'rgb(57, 0, 38)';
+  ctx.fillRect(150, 0, 500, 600);
+  ctx.drawImage(document.getElementById('earth'), 325, 490, 150, 175);
 
   // Start Screen
   if (gameState === 'start') {
@@ -70,8 +80,8 @@ function drawUI() {
     ctx.fillStyle = 'rgb(95, 38, 76)';
 
     // Title
-    ctx.font = '30px Consolas';
-    ctx.fillText('Game', 650, 90, 75);
+    ctx.font = '40px Castellar';
+    ctx.fillText('Game', 660, 70, 125);
 
     if (plr.health > 30) {
       ctx.fillStyle = 'rgb(45, 235, 112)';
@@ -84,7 +94,7 @@ function drawUI() {
     // Lose Screen
   } else if (gameState === 'lose') {
     ctx.fillStyle = 'rgb(88, 215, 204)';
-    ctx.fillText('lose', 200, 100);
+    ctx.fillText('You Lost', 200, 100);
   }
 }
 
@@ -206,10 +216,7 @@ function drawCharacter() {
 }
 
 //  Draw Background
-function drawBackground() {
-  ctx.fillStyle = 'rgb(57, 0, 38)';
-  ctx.fillRect(150, 0, 500, 600);
-}
+function drawBackground() {}
 
 function spawnLaser() {
   laser = {
@@ -240,11 +247,11 @@ function drawLasers() {
 function logicEnemies() {
   if (enemyCooldown === 0) {
     spawnEnemies();
-    if (hiScore < 500) {
+    if (score < 500) {
       enemyCooldown += 300;
-    } else if (hiScore < 1000) {
+    } else if (score < 1000) {
       enemyCooldown += 180;
-    } else if (hiScore < 1500) {
+    } else if (score < 1500) {
       enemyCooldown += 60;
     } else {
       enemyCooldown += 30;
@@ -268,7 +275,7 @@ function logicEnemies() {
     }
     if (enemyArray[i1].health === 0) {
       enemyArray.splice(i1, 1);
-      hiScore += 50;
+      score += 50;
     }
   }
 }
@@ -279,7 +286,7 @@ function spawnEnemies() {
     y: 0,
     w: 40,
     h: 40,
-    health: 3,
+    health: 5,
   };
 
   enemyArray.push(enemy);

@@ -16,6 +16,7 @@ let mouse = {
 };
 let plr, enemy, laser, zombie, playbutton;
 let enemyCooldown = 0;
+let score = 0;
 let hiScore = 0;
 let laserArray = [];
 let enemyArray = [];
