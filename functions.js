@@ -54,7 +54,7 @@ function drawUI() {
 
   ctx.fillStyle = 'rgb(57, 0, 38)';
   ctx.fillRect(150, 0, 500, 600);
-  ctx.drawImage(document.getElementById('earth'), 325, 490, 150, 175);
+  ctx.drawImage(document.getElementById('earth'), 0, 0);
 
   // Start Screen
   if (gameState === 'start') {
@@ -88,7 +88,7 @@ function drawUI() {
     } else {
       ctx.fillStyle = 'rgb(232, 60, 53)';
     }
-    ctx.fillRect(100, 460 - plr.health * 3, 46, plr.health * 3);
+    ctx.fillRect(92, 460 - plr.health * 3, 46, plr.health * 3);
     ctx.drawImage(document.getElementById('healthbar'), 0, 0);
 
     // Lose Screen
@@ -102,52 +102,17 @@ function drawUI() {
 function moveCharacter() {
   // Accelerate
   if (wIsPressed) {
-    plr.ySpeed -= plr.Accel;
+   plr.y -= 3
   }
   if (sIsPressed) {
-    plr.ySpeed += plr.Accel;
+    plr.y += 3;
   }
   if (aIsPressed) {
-    plr.xSpeed -= plr.Accel;
+    plr.x -= 3;
   }
   if (dIsPressed) {
-    plr.xSpeed += plr.Accel;
+    plr.x += 3;
   }
-
-  // Slow down
-  if (wIsPressed === false && plr.ySpeed < 0) {
-    plr.ySpeed += plr.Accel;
-    plr.ySpeed = +plr.ySpeed.toFixed(1);
-  }
-  if (sIsPressed === false && plr.ySpeed > 0) {
-    plr.ySpeed -= plr.Accel;
-    plr.ySpeed = +plr.ySpeed.toFixed(1);
-  }
-  if (aIsPressed === false && plr.xSpeed < 0) {
-    plr.xSpeed += plr.Accel;
-    plr.xSpeed = +plr.xSpeed.toFixed(1);
-  }
-  if (dIsPressed === false && plr.xSpeed > 0) {
-    plr.xSpeed -= plr.Accel;
-    plr.xSpeed = +plr.xSpeed.toFixed(1);
-  }
-
-  // Max Speed
-  if (plr.xSpeed > 5) {
-    plr.xSpeed = 5;
-  } else if (plr.xSpeed < -5) {
-    plr.xSpeed = -5;
-  }
-  if (plr.ySpeed > 5) {
-    plr.ySpeed = 5;
-  } else if (plr.ySpeed < -5) {
-    plr.ySpeed = -5;
-  }
-
-  // Move character
-  plr.y += plr.ySpeed;
-  plr.x += plr.xSpeed;
-  //
 
   // Adjust Player for client boundaries
   if (plr.x > 650 - plr.w) {
@@ -247,11 +212,11 @@ function drawLasers() {
 function logicEnemies() {
   if (enemyCooldown === 0) {
     spawnEnemies();
-    if (score < 500) {
+    if (score < 250) {
       enemyCooldown += 300;
-    } else if (score < 1000) {
+    } else if (score < 500) {
       enemyCooldown += 180;
-    } else if (score < 1500) {
+    } else if (score < 1000) {
       enemyCooldown += 60;
     } else {
       enemyCooldown += 30;
@@ -272,6 +237,10 @@ function logicEnemies() {
         enemyArray[i1].health -= 1;
         laserArray.splice(i2, 1);
       }
+    }
+    if (enemyArray[i1].y > 600) {
+      enemyArray[i1].health = 0
+      plr.health -= 10
     }
     if (enemyArray[i1].health === 0) {
       enemyArray.splice(i1, 1);
@@ -294,9 +263,7 @@ function spawnEnemies() {
 function moveEnemies() {
   for (let i = 0; i < enemyArray.length; i++) {
     enemyArray[i].y += 2;
-    if (enemyArray[i].y > 600) {
-      enemyArray.splice(i, 1);
-    }
+    
   }
 }
 function drawEnemies() {
