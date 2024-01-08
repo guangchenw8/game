@@ -80,7 +80,7 @@ function drawUI() {
     } else {
       ctx.fillStyle = 'rgb(232, 60, 53)';
     }
-    ctx.fillRect(92, 435 - plr.health * 3, 46, plr.health * 3);
+    ctx.fillRect(92, 434 - plr.health * 3, 46, plr.health * 3);
     ctx.fillStyle = 'rgb(114, 75, 102)';
     ctx.fillRect(92, 135, 46, 300 - plr.health * 3);
     ctx.drawImage(document.getElementById('healthbar'), 90, 86);
