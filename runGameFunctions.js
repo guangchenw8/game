@@ -426,7 +426,7 @@ function logicPowerUp() {
         plr.ammo += plr.ammoMax / 5;
       } else if (powerUpArray[i].type === 'health') {
         // // // Health power up effects
-        plr.health += plr.healthMax / 10;
+        plr.health += 30;
       } else if (powerUpArray[i].type === 'xp') {
         // // // Experience power up effects
         plr.xp += 20 + Math.random() * 30;
