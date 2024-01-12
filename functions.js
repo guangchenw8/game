@@ -20,42 +20,6 @@ function runGame() {
   }
 }
 
-// Set Game Function
-function setGame() {
-  // // Reset all object positions and data
-  plr = {
-    x: 380,
-    y: 600,
-    w: 40,
-    h: 40,
-    xSpeed: 0,
-    ySpeed: 0,
-    Accel: 0.2,
-    cooldown: 0,
-    iFrames: 0,
-    health: 100,
-    healthMax: 100,
-    ammo: 50,
-    ammoMax: 50,
-    xp: 0,
-    upgradeammo: 1,
-    upgradebiglaser: 1,
-    upgradefastlaser: 1,
-  };
-  enemy1 = {
-    x: 150 + Math.random() * 460,
-    y: -100,
-    w: 40,
-    h: 40,
-    health: 5,
-    cooldown: 0,
-  };
-  score = 0;
-  laserArray = [];
-  enemy1Array = [];
-  powerUpArray = [];
-}
-
 // Miscellaneous Game Logic
 function logicGame() {
   // // Upgrades
@@ -300,7 +264,6 @@ function spawnLaser() {
   // // Spawn laser
   laserArray.push(laser);
   // // Pew sound
-  let pew = document.createElement('audio');
   pew.src = 'audio/pop.mp3';
   pew.play();
 }

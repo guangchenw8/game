@@ -7,7 +7,7 @@ cnv.width = 800;
 cnv.height = 800;
 cnv.style.backgroundColor = 'white';
 
-// Global Variables
+// Global Variables and Objects
 let mouse = {
   x: 0,
   y: 0,
@@ -48,9 +48,46 @@ let wIsPressed = false;
 let sIsPressed = false;
 let aIsPressed = false;
 let dIsPressed = false;
+let pew = document.createElement('audio');
 
 // Set the game
 setGame();
+
+// Set Game Function
+function setGame() {
+  // // Reset all object positions and data
+  plr = {
+    x: 380,
+    y: 600,
+    w: 40,
+    h: 40,
+    xSpeed: 0,
+    ySpeed: 0,
+    Accel: 0.2,
+    cooldown: 0,
+    iFrames: 0,
+    health: 100,
+    healthMax: 100,
+    ammo: 50,
+    ammoMax: 50,
+    xp: 0,
+    upgradeammo: 1,
+    upgradebiglaser: 1,
+    upgradefastlaser: 1,
+  };
+  enemy1 = {
+    x: 150 + Math.random() * 460,
+    y: -100,
+    w: 40,
+    h: 40,
+    health: 5,
+    cooldown: 0,
+  };
+  score = 0;
+  laserArray = [];
+  enemy1Array = [];
+  powerUpArray = [];
+}
 
 // Load frame
 window.addEventListener('load', frame);
