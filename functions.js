@@ -388,7 +388,7 @@ function drawEnemies() {
 
 // Spawn Power Ups Functions
 function spawnPowerUp(enemyDeathLocationX, enemyDeathLocationY) {
-  // // Define the power up object
+  // // Define the power up object with enemy death location
   powerUp = {
     x: enemyDeathLocationX,
     y: enemyDeathLocationY,
