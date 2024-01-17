@@ -116,6 +116,7 @@ function drawUI() {
     ctx.font = '27px Consolas';
     ctx.fillStyle = 'rgb(114, 75, 102)';
     ctx.fillText('UPGRADES:', 660, 165);
+    ctx.fillText(`${Math.round(plr.xp / 100)}x`, 700, 215);
     ctx.drawImage(document.getElementById('upgradebar'), 671, 170);
     if (plr.xp >= 100) {
       ctx.drawImage(

@@ -21,19 +21,19 @@ let playbutton = {
 };
 let upgradeammo = {
   x: 662,
-  y: 200,
+  y: 220,
   w: 125,
   h: 125,
 };
 let upgradebiglaser = {
   x: 662,
-  y: 350,
+  y: 370,
   w: 125,
   h: 125,
 };
 let upgradefastlaser = {
   x: 662,
-  y: 500,
+  y: 520,
   w: 125,
   h: 125,
 };
